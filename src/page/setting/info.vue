@@ -14,7 +14,7 @@
         </el-form-item>
 
         <el-form-item label="签名">
-          <el-input type="text" v-model="userInfo.sign" autocomplete="off" ></el-input>
+          <el-input type="text" v-model="userInfo.sign" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="头像" class="user-info-avatar">
           <div class="user-avatar-container" @click="showAvatarCut=true">
@@ -65,7 +65,7 @@ export default {
         this.$message.success(response.message)
         console.log(response)
         //上传成功
-        this.userInfo.avatar = 'http://localhost:2021/portal/image/' + response.data.id;
+        this.userInfo.avatar = this.blog_constant.baseUrl + '/portal/image/' + response.data.id;
       } else {
         this.$message.error(response.message)
       }

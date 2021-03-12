@@ -14,7 +14,7 @@
         </el-table-column>
         <el-table-column label="logo" width="200">
           <template slot-scope="scope">
-            <el-image fit="cover" :src="'http://localhost:2021'+scope.row.logo"></el-image>
+            <el-image fit="cover" :src="blog_constant.baseUrl+scope.row.logo"></el-image>
           </template>
         </el-table-column>
         <el-table-column prop="order" label="顺序" width="200">
@@ -74,7 +74,7 @@
             <el-form-item label="logo">
               <div class="friend-link-image-upload" @click="showFriendLinkCut=true">
                 <i class="el-icon-plus" v-if="friendLink.logo===''"></i>
-                <el-image v-else :src="'http://localhost:2021'+friendLink.logo"></el-image>
+                <el-image v-else :src="blog_constant.baseUrl+friendLink.logo"></el-image>
               </div>
             </el-form-item>
           </el-form>
@@ -96,6 +96,22 @@
                      url="/admin/image/link"
                      img-format="png"
       ></avatar-upload>
+      <el-dialog
+          title="警告"
+          :visible.sync="deleteDialogShow"
+          width="400px"
+          :close-on-click-modal="false">
+        <span>你确定要删除： [{{ deleteMessage }}] 这个轮播图吗？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button
+              @click="deleteDialogShow = false"
+              size="medium"
+              type="danger">
+            取 消
+          </el-button>
+          <el-button type="primary" @click="doDeleteItem" size="medium">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -108,6 +124,9 @@ import avatarUpload from 'vue-image-crop-upload';
 export default {
   data() {
     return {
+      targetDeleteId: '',
+      deleteMessage: '',
+      deleteDialogShow: false,
       showFriendLinkCut: false,
       editCommitText: '',
       editDialogShow: false,
@@ -128,16 +147,31 @@ export default {
     'avatar-upload': avatarUpload
   },
   methods: {
+    doDeleteItem() {
+      api.deleteFriendLink(this.targetDeleteId).then(response => {
+        this.deleteDialogShow = false
+        if (response.code === api.success_code) {
+          this.$message.success(response.message)
+          this.listLinks()
+        } else {
+          this.$message.error(response.message)
+        }
+      })
+    },
+    deleteRow(item) {
+      this.deleteDialogShow = true
+      this.deleteMessage = item.name
+      this.targetDeleteId = item.id
+    },
     edit(item) {
-      console.log(item)
       this.friendLink.name = item.name
       this.friendLink.order = item.order
       this.friendLink.state = item.state
       this.friendLink.logo = item.logo
       this.friendLink.url = item.url
       this.friendLink.id = item.id
-      this.editCommitText = '修改'
-      this.editTitle = '修改友情链接'
+      this.editCommitText = '更 新'
+      this.editTitle = '更新友情链接'
       this.editDialogShow = true
     },
     cropUploadFail() {
@@ -146,7 +180,6 @@ export default {
     cropUploadSuccess(response) {
       if (response.code === api.success_code) {
         this.$message.success(response.message)
-        console.log(response)
         //上传成功
         this.friendLink.logo = '/portal/image/' + response.data.id;
       } else {
@@ -173,19 +206,30 @@ export default {
         this.$message.error('logo不可以为空')
         return
       }
-      //提交数据
-      api.addFriendLink(this.friendLink).then(response => {
-        if (response.code === api.success_code) {
-          this.editDialogShow = false
-          this.$message.success(response.message)
-          this.listLinks()
-          //重置内容
-          this.resetFriendLink()
-        } else {
-          this.$message.error(response.message)
-        }
-      })
-
+      if (this.friendLink.id !== '') {
+        api.postFriendLink(this.friendLink).then(response => {
+          if (response.code === api.success_code) {
+            this.editDialogShow = false
+            this.$message.success(response.message)
+            this.listLinks()
+          } else {
+            this.$message.error(response.message)
+          }
+        })
+      } else {
+        //提交数据
+        api.addFriendLink(this.friendLink).then(response => {
+          if (response.code === api.success_code) {
+            this.editDialogShow = false
+            this.$message.success(response.message)
+            this.listLinks()
+            //重置内容
+            this.resetFriendLink()
+          } else {
+            this.$message.error(response.message)
+          }
+        })
+      }
     },
     resetFriendLink() {
       this.friendLink = {

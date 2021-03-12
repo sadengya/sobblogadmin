@@ -102,3 +102,7 @@ export const postFriendLink = (friendLink) => {
 export const addFriendLink = (friendLink) => {
     return http.requestPost('/admin/friend_link', friendLink)
 }
+//删除友情链接列表
+export const deleteFriendLink = (friendLinkId) => {
+    return http.requestDelete('/admin/friend_link/' + friendLinkId)
+}

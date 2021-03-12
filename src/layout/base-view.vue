@@ -4,18 +4,13 @@
       <el-header id="admin-header-box" style="height: 40px">
         <topHeader></topHeader>
       </el-header>
-      <el-container>
-        <el-aside id="left-menu-list-box" width="200px">
+      <el-container class="main-container">
+        <el-aside id="left-menu-list-box" width="220px">
           <leftMenu></leftMenu>
         </el-aside>
-        <el-container>
           <el-main>
-            <div class="content">
               <router-view></router-view>
-            </div
-            >
           </el-main>
-        </el-container>
       </el-container>
     </el-container>
   </div>
@@ -28,14 +23,7 @@ export default {
   components: {leftMenu},
 
   mounted() {
-    //动态设置侧边菜单的高度
-    let leftMenuBox = document.getElementById("left-menu-list-box");
-    let adminHeaderBox = document.getElementById("admin-header-box").style
-        .height;
-    if (leftMenuBox && adminHeaderBox) {
-      leftMenuBox.style.height =
-          window.innerHeight - Number.parseInt(adminHeaderBox) + "px";
-    }
+
   },
 };
 </script>
@@ -43,7 +31,12 @@ export default {
 #left-menu-list-box .el-menu {
   border-right: none;
 }
-
+.main-container{
+  position: absolute;
+  top: 40px;
+  bottom: 0;
+  width: 100%;
+}
 .el-header {
   background-color: dodgerblue;
   line-height: 40px;
