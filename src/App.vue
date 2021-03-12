@@ -15,4 +15,8 @@ export default {
   padding: 0;
   margin: 0;
 }
+.clearfix {
+  overflow: auto;
+  zoom: 1;
+}
 </style>

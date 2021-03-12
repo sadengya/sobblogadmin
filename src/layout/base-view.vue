@@ -8,9 +8,9 @@
         <el-aside id="left-menu-list-box" width="220px">
           <leftMenu></leftMenu>
         </el-aside>
-          <el-main>
-              <router-view></router-view>
-          </el-main>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -31,12 +31,19 @@ export default {
 #left-menu-list-box .el-menu {
   border-right: none;
 }
-.main-container{
+
+#left-menu-list-box {
+  z-index: 2001;
+  background: #ffffff;
+}
+
+.main-container {
   position: absolute;
   top: 40px;
   bottom: 0;
   width: 100%;
 }
+
 .el-header {
   background-color: dodgerblue;
   line-height: 40px;
@@ -45,6 +52,5 @@ export default {
 .el-aside {
   border-right: solid 1px #e6e6e6;
   line-height: 200px;
-  height: 500px;
 }
 </style>

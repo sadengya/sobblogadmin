@@ -2,7 +2,7 @@
   <div class="right-content-container">
     <!-- 显示我们的内容 -->
     <div class="content-title-box" v-text="$route.name"></div>
-    <div class="content">
+    <div class="content-container-box">
       <router-view></router-view>
     </div>
   </div>
@@ -18,8 +18,5 @@ export default {};
   margin-bottom: 10px;
   font-size: 20px;
   line-height: 30px;
-}
-.content {
-  padding: 5px;
 }
 </style>

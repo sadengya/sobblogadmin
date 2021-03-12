@@ -9,7 +9,10 @@ import leftMenu from './layout/left-menu'
 import topHeader from './layout/top-header'
 import constants from './utils/constants'
 
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
+Vue.use(mavonEditor)
 Vue.use(ElementUI)
 Vue.component('leftMenu', leftMenu)
 Vue.component('topHeader', topHeader)
